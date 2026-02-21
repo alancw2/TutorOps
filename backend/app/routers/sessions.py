@@ -1,14 +1,12 @@
 from fastapi import APIRouter
 from app.schemas import SessionCreate, SessionOut
 from fastapi import HTTPException
+from app.storage import storage.clients_db, sessions_db
 
 router = APIRouter(
     prefix="/sessions",
     tags=["sessions"]
 )
-
-sessions_db = []
-next_session_id = 1
 
 @router.post("/", response_model = SessionOut)
 def create_session(session: SessionCreate):

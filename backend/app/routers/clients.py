@@ -1,32 +1,77 @@
 from fastapi import APIRouter
-from app.schemas import ClientCreate, ClientOut
+from app.schemas import ClientCreate, ClientOut, SessionCreate, SessionOut, ClientSummaryOut, GlobalSummaryOut
+from app import storage
 from fastapi import HTTPException
+
+#Helpers
+def get_client_by_id(client_id: int):
+    for c in storage.clients_db:
+        if (c["id"] == client_id):
+            return c
+    return None
+
 
 router = APIRouter(
     prefix="/clients",
     tags=["clients"]
 )
 
-clients_db = []
-next_id = 1
-
 @router.post("/", response_model=ClientOut)
 def create_client(client: ClientCreate):
-    global next_id
     new_client = client.model_dump()
-    new_client["id"] = next_id
-    next_id += 1
-    clients_db.append(new_client)
+    new_client["id"] = storage.next_client_id
+    storage.next_client_id += 1
+    storage.clients_db.append(new_client)
     return new_client
 
 @router.get("/", response_model=list[ClientOut])
 def list_clients():
-    return clients_db
+    return storage.clients_db
 
 @router.get("/{client_id}", response_model=ClientOut)
-def get_client_by_id(client_id: int):
-    for c in clients_db:
-        if (c["id"] == client_id):
-            return c
-    raise HTTPException(status_code=404, detail="Client not found")
-    
+def get_client_out(client_id: int):
+    client = get_client_by_id(client_id)
+    if client is None: 
+        raise HTTPException(status_code = 404, detail="client not found")
+    return client
+
+
+@router.get("/{client_id}/sessions", response_model=list[SessionOut])
+def list_client_sessions(client_id: int):
+    client = get_client_by_id(client_id)
+    if client is None:
+        raise HTTPException(status_code=404, detail="Client not found")
+    client_sessions = []
+    for s in storage.sessions_db:
+        if (s["client_id"] == client_id):
+            client_sessions.append(s)
+    return client_sessions
+
+@router.get("/{client_id}/summary", response_model=ClientSummaryOut)
+def get_client_summary(client_id: int):
+    #calculate total_sessions
+    client = get_client_by_id(client_id)
+    if client is None:
+        raise HTTPException(status_code=404, detail="client not found")
+
+    total_sessions = 0
+    total_hours = 0.0
+    total_earnings = 0.0
+    for s in storage.sessions_db:
+        if (s["client_id"] == client_id):
+            total_sessions += 1
+            total_hours += s["duration_hours"]
+            total_earnings += s["duration_hours"] * client["hourly_rate"]
+    return {
+        "client_id": client_id,
+        "total_sessions": total_sessions,
+        "total_hours": total_hours,
+        "total_earnings": total_earnings,
+    }
+
+
+
+
+
+
+
