@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.schemas import ClientCreate, ClientOut, SessionCreate, SessionOut, ClientSummaryOut, GlobalSummaryOut
+from app import schemas
 from app import storage
 from fastapi import HTTPException
 
@@ -16,19 +16,19 @@ router = APIRouter(
     tags=["clients"]
 )
 
-@router.post("/", response_model=ClientOut)
-def create_client(client: ClientCreate):
+@router.post("/", response_model=schemas.ClientOut)
+def create_client(client: schemas.ClientCreate):
     new_client = client.model_dump()
     new_client["id"] = storage.next_client_id
     storage.next_client_id += 1
     storage.clients_db.append(new_client)
     return new_client
 
-@router.get("/", response_model=list[ClientOut])
+@router.get("/", response_model=list[schemas.ClientOut])
 def list_clients():
     return storage.clients_db
 
-@router.get("/{client_id}", response_model=ClientOut)
+@router.get("/{client_id}", response_model=schemas.ClientOut)
 def get_client_out(client_id: int):
     client = get_client_by_id(client_id)
     if client is None: 
@@ -36,7 +36,7 @@ def get_client_out(client_id: int):
     return client
 
 
-@router.get("/{client_id}/sessions", response_model=list[SessionOut])
+@router.get("/{client_id}/sessions", response_model=list[schemas.SessionOut])
 def list_client_sessions(client_id: int):
     client = get_client_by_id(client_id)
     if client is None:
@@ -47,7 +47,7 @@ def list_client_sessions(client_id: int):
             client_sessions.append(s)
     return client_sessions
 
-@router.get("/{client_id}/summary", response_model=ClientSummaryOut)
+@router.get("/{client_id}/summary", response_model=schemas.ClientSummaryOut)
 def get_client_summary(client_id: int):
     #calculate total_sessions
     client = get_client_by_id(client_id)
