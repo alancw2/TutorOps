@@ -1,15 +1,23 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from app import schemas
-from fastapi import HTTPException
 from app import storage
 
 router = APIRouter(
     prefix="/sessions",
     tags=["sessions"]
 )
+def find_client(client_id: int) -> dict | None:
+    for c in storage.clients_db:
+        if c["id"] == client_id:
+            return c
+    return None
+
 
 @router.post("/", response_model = schemas.SessionOut)
 def create_session(session: schemas.SessionCreate):
+    client = find_client(session.client_id)
+    if client is None:
+        raise HTTPException(status_code=404, detail="client not found")
     new_session = session.model_dump()
     new_session["id"] = storage.next_session_id
     storage.next_session_id += 1
