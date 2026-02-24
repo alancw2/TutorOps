@@ -81,15 +81,15 @@ Sessions
 - GET /summary — global platform metrics
 
 ## Running Backend Only (Local Dev)
-** From backend/: **
+**From backend/:**
 ```bash 
 uvicorn app.main:app --reload
 ```
-** API will be available at: **
+**API will be available at:**
 http://localhost:8000
 
 ## Testing
-** Run the automated test suite **
+**Run the automated test suite**
 pytest -q
 
 ## Design Notes
@@ -115,6 +115,6 @@ pytest -q
 - Minimal frontend intentionally avoids heavy frameworks
 
 ## Author
-** Alan Ward **
+**Alan Ward**
 UIUC Mathematics 
 Github: https://github.com/alancw2
