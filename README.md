@@ -70,6 +70,9 @@ Then open:
 
 -Health check: http://localhost:8000/health
 
+---
+```
+
 ## API Overview
 Clients
 
