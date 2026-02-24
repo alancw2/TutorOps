@@ -33,24 +33,6 @@ TutorOps is a lightweight full-stack tutoring operations platform for managing c
 - Docker
 - Docker Compose
 
----
-
-## Project Structure
-TutorOps/
-├── backend/
-│ ├── app/
-│ │ ├── routers/
-│ │ ├── models.py
-│ │ ├── schemas.py
-│ │ ├── db.py
-│ │ └── main.py
-│ ├── tests/
-│ └── Dockerfile
-├── frontend/
-│ ├── index.html
-│ ├── app.js
-│ └── styles.css
-└── docker-compose.yml
 
 ---
 
@@ -76,31 +58,33 @@ Then open:
 ## API Overview
 Clients
 
-POST /clients/ — create client
+-POST /clients/ — create client
 
-GET /clients/ — list clients
+-GET /clients/ — list clients
 
-GET /clients/{client_id} — get client
+-GET /clients/{client_id} — get client
 
-GET /clients/{client_id}/sessions — sessions for client
+-GET /clients/{client_id}/sessions — sessions for client
 
-GET /clients/{client_id}/summary — client analytics
+-GET /clients/{client_id}/summary — client analytics
 
 Sessions
 
-POST /sessions/ — create session
+-POST /sessions/ — create session
 
-GET /sessions/ — list sessions
+-GET /sessions/ — list sessions
 
-GET /sessions/{session_id} — get session
+-GET /sessions/{session_id} — get session
 
-Analytics
+## Analytics
 
-GET /summary — global platform metrics
+- GET /summary — global platform metrics
 
 ## Running Backend Only (Local Dev)
 ** From backend/: **
+```bash 
 uvicorn app.main:app --reload
+```
 ** API will be available at: **
 http://localhost:8000
 
