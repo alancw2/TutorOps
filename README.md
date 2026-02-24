@@ -43,7 +43,7 @@ Run the full stack with Docker:
 ```bash
 
 docker compose up --build
-
+```
 Then open:
 
 -Frontend dashboard: http://localhost:5173
@@ -53,7 +53,7 @@ Then open:
 -Health check: http://localhost:8000/health
 
 ---
-```
+
 
 ## API Overview
 Clients
