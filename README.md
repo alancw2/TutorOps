@@ -2,7 +2,7 @@
 
 TutorOps is a lightweight full-stack tutoring operations platform for managing clients, session logs, and earnings analytics. It provides a FastAPI backend with a SQLite database and a minimal JavaScript dashboard for real-time interaction.
 ---
-**Disclaimer**: Presently, the docker environment does not work on Fedora Linux. 
+Disclaimer: Presently, the docker environment does not work on Fedora Linux. 
 ---
 
 ## Features
