@@ -1,5 +1,4 @@
 from fastapi import FastAPI, HTTPException 
-from fastapi.middleware.cors import CORSMiddleware
 import app.routers.clients as clients
 from app import schemas
 from app import storage
@@ -16,15 +15,6 @@ def get_client_by_id(client_id: int):
 
 
 app = FastAPI()
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 app.include_router(clients_router)
 app.include_router(sessions_router)
 
