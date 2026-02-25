@@ -2,7 +2,8 @@
 
 TutorOps is a lightweight full-stack tutoring operations platform for managing clients, session logs, and earnings analytics. It provides a FastAPI backend with a SQLite database and a minimal JavaScript dashboard for real-time interaction.
 ---
-Disclaimer: Presently, the docker environment does not work on Fedora Linux. The program can still be ran using Live Server + "uvicorn app.main:app --reload"
+Disclaimer: \
+-Presently, the docker environment does not work on Fedora Linux. The program can still be ran using Live Server + "uvicorn app.main:app --reload"
 ---
 
 ## Features
@@ -116,6 +117,6 @@ pytest -q
 - Minimal frontend intentionally avoids heavy frameworks
 
 ## Author
-**Alan Ward**
-UIUC Mathematics 
-Github: https://github.com/alancw2
+**Alan Ward**\
+UIUC Mathematics \
+Github: https://github.com/alancw2/TutorOps \
