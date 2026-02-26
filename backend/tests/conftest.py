@@ -13,10 +13,7 @@ from app import storage
 
 @pytest.fixture(autouse=True)
 def reset_storage():
-    storage.clients_db.clear()
-    storage.sessions_db.clear()
-    storage.next_client_id = 1
-    storage.next_session_id = 1
+    storage.reset_db()
     yield
 
 

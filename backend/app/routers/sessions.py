@@ -6,32 +6,24 @@ router = APIRouter(
     prefix="/sessions",
     tags=["sessions"]
 )
-def find_client(client_id: int) -> dict | None:
-    for c in storage.clients_db:
-        if c["id"] == client_id:
-            return c
-    return None
 
 
-@router.post("/", response_model = schemas.SessionOut)
+@router.post("/", response_model=schemas.SessionOut)
 def create_session(session: schemas.SessionCreate):
-    client = find_client(session.client_id)
+    client = storage.get_client_by_id(session.client_id)
     if client is None:
         raise HTTPException(status_code=404, detail="client not found")
-    new_session = session.model_dump()
-    new_session["id"] = storage.next_session_id
-    storage.next_session_id += 1
-    storage.sessions_db.append(new_session)
-    return new_session
+    return storage.create_session(session.model_dump())
+
 
 @router.get("/", response_model=list[schemas.SessionOut])
 def list_sessions():
-    return storage.sessions_db
+    return storage.list_sessions()
+
 
 @router.get("/{session_id}", response_model=schemas.SessionOut)
 def get_session_by_id(session_id: int):
-    for s in storage.sessions_db:
-        if (s["id"] == session_id):
-            return s
-    raise HTTPException(status_code=404, detail="Session not found")
-
+    session = storage.get_session_by_id(session_id)
+    if session is None:
+        raise HTTPException(status_code=404, detail="Session not found")
+    return session
